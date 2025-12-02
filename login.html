@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Dulce Tentación</title>
+    <link rel="stylesheet" href="stylelogin.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <h1 class="logo">🧁 Dulce Tentación</h1>
+                <ul class="nav-menu">
+                    <li><a href="index.html" class="nav-link">Inicio</a></li>
+                    <li><a href="carrito.html" class="nav-link">Carrito</a></li>
+                    <li><a href="detalle.html" class="nav-link">Historial</a></li>
+                    <li><a href="login.html" class="nav-link active">Login</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- FORMULARIO LOGIN -->
+    <section class="login-section">
+        <div class="login-card">
+            <h2>Iniciar Sesión</h2>
+
+            <div class="input-group">
+                <label for="user">Usuario</label>
+                <input type="text" id="user" placeholder="Ingresa tu usuario">
+            </div>
+
+            <div class="input-group">
+                <label for="pass">Contraseña</label>
+                <input type="password" id="pass" placeholder="Ingresa tu contraseña">
+            </div>
+
+            <button class="btn-login" onclick="iniciarSesion()">Ingresar</button>
+
+            <p id="login-error" class="error-msg"></p>
+        </div>
+    </section>
+
+    <script src="login.js"></script>
+
+</body>
+</html>

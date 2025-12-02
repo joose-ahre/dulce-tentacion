@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dulce Tentación - Postres para Todos</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <h1 class="logo">🧁 Dulce Tentación</h1>
+                <ul class="nav-menu">
+                    <li><a href="index.html" class="nav-link active">Inicio</a></li>
+                    <li><a href="carrito.html" class="nav-link">Carrito <span id="cart-count">(0)</span></a></li>
+                    <li><a href="detalle.html" class="nav-link active">Historial</a></li>
+                    <li><a href="login.html" id="login-btn" class="nav-link active">Login</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- MAIN -->
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h2>Postres Deliciosos para Todos</h2>
+                <p>Tradicionales, Sin TACC y Fitness</p>
+            </div>
+        </section>
+
+        <section class="filters">
+            <div class="container">
+                <h3>Filtrar por categoría:</h3>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-category="todos">Todos</button>
+                    <button class="filter-btn" data-category="tradicional">Tradicional</button>
+                    <button class="filter-btn" data-category="sin-tacc">Sin TACC</button>
+                    <button class="filter-btn" data-category="fitness">Fitness</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="products">
+            <div class="container">
+                <h3>Nuestros Postres</h3>
+                <div class="products-grid" id="products-grid">
+                    <!-- Los productos se cargarán aquí dinámicamente -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Dulce Tentación. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- MODAL LOGIN -->
+    <div id="login-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2>Iniciar Sesión</h2>
+            <input type="text" id="username" placeholder="Usuario" required>
+            <input type="password" id="password" placeholder="Contraseña" required>
+            <button id="login-submit">Ingresar</button>
+            <button id="login-close">Cerrar</button>
+            <p id="login-error" class="error"></p>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>
