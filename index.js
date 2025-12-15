@@ -150,3 +150,8 @@ loginSubmit.addEventListener("click", () => {
         document.getElementById("login-error").textContent = "Usuario o contraseña incorrectos";
     }
 });
+
+async function obtenerProductosFirebase() { ... }
+async function renderProductosFirebase() { ... }
+
+renderProductosFirebase();
