@@ -155,3 +155,7 @@ async function obtenerProductosFirebase() { ... }
 async function renderProductosFirebase() { ... }
 
 renderProductosFirebase();
+
+import { db } from "./firebaseConfig.js";
+
+console.log("Firebase DB:", db);
