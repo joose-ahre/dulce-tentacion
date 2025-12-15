@@ -147,4 +147,4 @@ loginSubmit.addEventListener("click", () => {
     }
 });
 
-import { db } from "./firebaseConfig.js";
+
