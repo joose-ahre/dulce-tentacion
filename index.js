@@ -1,73 +1,67 @@
+// -----------------------------
+// FIREBASE (CDN)
+// -----------------------------
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+    getFirestore,
+    collection,
+    getDocs
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+import { agregarAlCarrito } from "./carrito.js"; // Importamos función del carrito
 
-const productos = [
-    // Tradicional
-    {
-        id: 1,
-        nombre: "Torta Oreo",
-        categoria: "tradicional",
-        precio: 3500,
-        descripcion: "Deliciosa torta con base de galletas Oreo y crema.",
-        icono: "🍰"
-    },
-    {
-        id: 2,
-        nombre: "Flan Casero",
-        categoria: "tradicional",
-        precio: 1500,
-        descripcion: "Flan tradicional con dulce de leche.",
-        icono: "🍮"
-    },
-    {
-        id: 3,
-        nombre: "Cheesecake Frutal",
-        categoria: "tradicional",
-        precio: 3200,
-        descripcion: "Clásico cheesecake con frutos rojos.",
-        icono: "🍓"
-    },
+// -----------------------------
+// CONFIG FIREBASE
+// -----------------------------
+const firebaseConfig = {
+    apiKey: "AIzaSyC-4k4gf9wxOJPYWi3BYs2y2uMEjFg0ZRg",
+    authDomain: "dulcetentacion-d1a4a.firebaseapp.com",
+    projectId: "dulcetentacion-d1a4a",
+    storageBucket: "dulcetentacion-d1a4a.firebasestorage.app",
+    messagingSenderId: "945332344572",
+    appId: "1:945332344572:web:62790bf16f34ae2ece6979"
+};
 
-    // Sin TACC
-    {
-        id: 4,
-        nombre: "Budín de Limón (Sin TACC)",
-        categoria: "sin-tacc",
-        precio: 1800,
-        descripcion: "Budín esponjoso apto para celíacos.",
-        icono: "🍋"
-    },
-    {
-        id: 5,
-        nombre: "Chocolate Cake (Sin TACC)",
-        categoria: "sin-tacc",
-        precio: 2400,
-        descripcion: "Bizcochuelo húmedo de chocolate sin gluten.",
-        icono: "🍫"
-    },
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-    // Fitness
-    {
-        id: 6,
-        nombre: "Cheesecake Proteico",
-        categoria: "fitness",
-        precio: 2800,
-        descripcion: "Cheesecake bajo en azúcar y alto en proteínas.",
-        icono: "💪"
-    },
-    {
-        id: 7,
-        nombre: "Brownie Fit",
-        categoria: "fitness",
-        precio: 1700,
-        descripcion: "Brownie sin azúcar con cacao puro.",
-        icono: "🍫"
-    }
-];
-
-// Cargar productos
+// -----------------------------
+// ELEMENTOS DEL DOM
+// -----------------------------
 const grid = document.getElementById("products-grid");
 const botonesFiltro = document.querySelectorAll(".filter-btn");
 
+const loginBtn = document.getElementById("login-btn");
+const loginModal = document.getElementById("login-modal");
+const loginClose = document.getElementById("login-close");
+const loginSubmit = document.getElementById("login-submit");
+
+let productos = [];
+
+// -----------------------------
+// CARGAR PRODUCTOS DESDE FIRESTORE
+// -----------------------------
+async function cargarProductos() {
+    const querySnapshot = await getDocs(collection(db, "productos"));
+    productos = [];
+
+    querySnapshot.forEach((doc) => {
+        productos.push({
+            id: doc.id,
+            nombre: doc.data().nombre || "Sin nombre",
+            descripcion: doc.data().descripcion || "",
+            precio: doc.data().precio ?? 0,
+            categoria: doc.data().categoria || "Sin categoría",
+            icono: doc.data().icono || "🧁"
+        });
+    });
+
+    mostrarProductos("todos");
+}
+
+// -----------------------------
+// MOSTRAR PRODUCTOS
+// -----------------------------
 function mostrarProductos(categoria) {
     grid.innerHTML = "";
 
@@ -82,25 +76,32 @@ function mostrarProductos(categoria) {
         card.innerHTML = `
             <div class="product-image">
                 ${p.icono}
-                <span class="category-badge ${p.categoria}">${p.categoria.toUpperCase()}</span>
+                <span class="category-badge ${p.categoria}">
+                    ${p.categoria.toUpperCase()}
+                </span>
             </div>
             <div class="product-info">
                 <h4 class="product-name">${p.nombre}</h4>
                 <p class="product-description">${p.descripcion}</p>
                 <p class="product-price">$${p.precio}</p>
-                <button class="btn btn-primary" onclick="agregarAlCarrito(${p.id})">
+                <button class="btn btn-primary">
                     Añadir al Carrito <i class="fa fa-cart-plus"></i>
                 </button>
             </div>
         `;
 
+        // Agregar producto al carrito (pasando TODO el objeto)
+        card.querySelector("button").addEventListener("click", () => {
+            agregarAlCarrito(p); // <-- aquí va el objeto completo
+        });
+
         grid.appendChild(card);
     });
 }
 
-mostrarProductos("todos");
-
-// Filtros
+// -----------------------------
+// FILTROS
+// -----------------------------
 botonesFiltro.forEach(boton => {
     boton.addEventListener("click", () => {
         botonesFiltro.forEach(b => b.classList.remove("active"));
@@ -109,31 +110,17 @@ botonesFiltro.forEach(boton => {
     });
 });
 
-// Carrito
-let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+// -----------------------------
+// LOGIN MODAL
+// -----------------------------
+loginBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    loginModal.classList.remove("hidden");
+});
 
-function actualizarCarrito() {
-    localStorage.setItem("carrito", JSON.stringify(carrito));
-    document.getElementById("cart-count").textContent = `(${carrito.length})`;
-}
-
-actualizarCarrito();
-
-function agregarAlCarrito(id) {
-    const producto = productos.find(p => p.id === id);
-    carrito.push(producto);
-    actualizarCarrito();
-    alert("Producto añadido al carrito");
-}
-
-// Modal Login
-const loginBtn = document.getElementById("login-btn");
-const loginModal = document.getElementById("login-modal");
-const loginClose = document.getElementById("login-close");
-const loginSubmit = document.getElementById("login-submit");
-
-loginBtn.addEventListener("click", () => loginModal.style.display = "block");
-loginClose.addEventListener("click", () => loginModal.style.display = "none");
+loginClose.addEventListener("click", () => {
+    loginModal.classList.add("hidden");
+});
 
 loginSubmit.addEventListener("click", () => {
     const user = document.getElementById("username").value;
@@ -141,10 +128,14 @@ loginSubmit.addEventListener("click", () => {
 
     if (user === "admin" && pass === "1234") {
         alert("Login exitoso");
-        loginModal.style.display = "none";
+        loginModal.classList.add("hidden");
     } else {
-        document.getElementById("login-error").textContent = "Usuario o contraseña incorrectos";
+        document.getElementById("login-error").textContent =
+            "Usuario o contraseña incorrectos";
     }
 });
 
-
+// -----------------------------
+// INICIAR
+// -----------------------------
+cargarProductos();

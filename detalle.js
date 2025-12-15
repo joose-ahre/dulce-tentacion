@@ -1,6 +1,8 @@
 
 
-// Cargar historial desde localStorage
+// -----------------------------
+// DETALLE.JS - Historial de Compras
+// -----------------------------
 const historyList = document.getElementById("history-list");
 let historial = JSON.parse(localStorage.getItem("historial")) || [];
 
@@ -18,7 +20,11 @@ function mostrarHistorial() {
         return;
     }
 
+    let totalAcumulado = 0;
+
     historial.forEach((compra, index) => {
+        totalAcumulado += compra.total;
+
         const item = document.createElement("div");
         item.classList.add("history-item");
 
@@ -46,6 +52,15 @@ function mostrarHistorial() {
 
         historyList.appendChild(item);
     });
+
+    // Total acumulado al final
+    const acumuladoDiv = document.createElement("div");
+    acumuladoDiv.classList.add("total-acumulado");
+    acumuladoDiv.innerHTML = `
+        <h3>Total gastado en todas las compras: $${totalAcumulado}</h3>
+    `;
+    historyList.appendChild(acumuladoDiv);
 }
 
+// Inicializar
 mostrarHistorial();
