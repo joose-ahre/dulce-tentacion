@@ -1,6 +1,8 @@
 import { db } from "./firebaseConfig.js";
 
 // Base de datos de productos
+import { db } from "./firebaseConfig.js";
+import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const productos = [
     // Tradicional
