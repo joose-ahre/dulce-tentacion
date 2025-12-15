@@ -1,4 +1,4 @@
-import { db } from "./firebaseConfig.js";
+
 
 // Cargar historial desde localStorage
 const historyList = document.getElementById("history-list");
