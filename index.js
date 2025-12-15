@@ -1,3 +1,5 @@
+import { db } from "./firebaseConfig.js";
+
 // Base de datos de productos
 
 const productos = [
