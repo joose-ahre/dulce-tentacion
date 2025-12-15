@@ -1,37 +1,20 @@
 
-import { db } from "./firebaseConfig.js";
-import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+rules_version = '2';
 
-// Función para obtener productos de Firebase
-async function obtenerProductosFirebase() {
-  try {
-    const productosCol = collection(db, "productos");
-    const snapshot = await getDocs(productosCol);
-    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-  } catch (error) {
-    console.error("Error al obtener productos de Firebase:", error);
-    return [];
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // This rule allows anyone with your Firestore database reference to view, edit,
+    // and delete all data in your Firestore database. It is useful for getting
+    // started, but it is configured to expire after 30 days because it
+    // leaves your app open to attackers. At that time, all client
+    // requests to your Firestore database will be denied.
+    //
+    // Make sure to write security rules for your app before that time, or else
+    // all client requests to your Firestore database will be denied until you Update
+    // your rules
+    match /{document=**} {
+      allow read, write: if request.time < timestamp.date(2026, 1, 13);
+    }
   }
-}
-
-// Función para renderizar productos en HTML
-async function renderProductosFirebase() {
-  const contenedor = document.getElementById("products-grid");
-  if (!contenedor) return;
-
-  const productos = await obtenerProductosFirebase();
-  productos.forEach(prod => {
-    const div = document.createElement("div");
-    div.classList.add("product-card");
-    div.innerHTML = `
-      <div class="product-icon">${prod.icono || ""}</div>
-      <h4 class="product-name">${prod.nombre}</h4>
-      <p class="product-price">Precio: $${prod.precio}</p>
-      <p class="product-desc">${prod.descripcion || ""}</p>
-    `;
-    contenedor.appendChild(div);
-  });
-}
-
-// Ejecutar la función
-renderProductosFirebase();
+           }
