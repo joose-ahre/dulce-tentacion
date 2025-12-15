@@ -146,3 +146,5 @@ loginSubmit.addEventListener("click", () => {
         document.getElementById("login-error").textContent = "Usuario o contraseña incorrectos";
     }
 });
+
+import { db } from "./firebaseConfig.js";
