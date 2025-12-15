@@ -1,3 +1,5 @@
+import { db } from "./firebaseConfig.js";
+
 // Cargar carrito desde localStorage
 let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 let historial = JSON.parse(localStorage.getItem("historial")) || [];
