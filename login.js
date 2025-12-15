@@ -1,3 +1,5 @@
+import { db } from "./firebaseConfig.js";
+
 function iniciarSesion() {
     const user = document.getElementById("user").value;
     const pass = document.getElementById("pass").value;
