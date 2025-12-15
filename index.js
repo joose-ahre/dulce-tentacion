@@ -1,8 +1,4 @@
-import { db } from "./firebaseConfig.js";
 
-// Base de datos de productos
-import { db } from "./firebaseConfig.js";
-import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const productos = [
     // Tradicional
@@ -151,11 +147,48 @@ loginSubmit.addEventListener("click", () => {
     }
 });
 
-async function obtenerProductosFirebase() { ... }
-async function renderProductosFirebase() { ... }
-
-renderProductosFirebase();
 
 import { db } from "./firebaseConfig.js";
+import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-console.log("Firebase DB:", db);
+// Función para obtener productos desde Firebase
+async function obtenerProductosFirebase() {
+  try {
+    const productosCol = collection(db, "productos");
+    const snapshot = await getDocs(productosCol);
+    const productos = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    return productos;
+  } catch (error) {
+    console.error("Error al obtener productos de Firebase:", error);
+    return [];
+  }
+}
+
+// Función para mostrar productos en consola (opcional para verificar)
+async function mostrarProductosFirebase() {
+  const productos = await obtenerProductosFirebase();
+  console.log("Productos desde Firebase:", productos);
+}
+
+// Función para renderizar productos en el HTML
+async function renderProductosFirebase() {
+  const contenedor = document.getElementById("products-grid");
+  if (!contenedor) return;
+
+  const productos = await obtenerProductosFirebase();
+  productos.forEach(prod => {
+    const div = document.createElement("div");
+    div.classList.add("product-card"); // opcional para CSS
+    div.innerHTML = `
+      <div class="product-icon">${prod.icono || ""}</div>
+      <h4 class="product-name">${prod.nombre}</h4>
+      <p class="product-price">Precio: $${prod.precio}</p>
+      <p class="product-desc">${prod.descripcion || ""}</p>
+    `;
+    contenedor.appendChild(div);
+  });
+}
+
+// Ejecutar funciones al cargar la página
+mostrarProductosFirebase();
+renderProductosFirebase();
